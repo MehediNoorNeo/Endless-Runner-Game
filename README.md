@@ -1,13 +1,17 @@
 # 🏃 Cyber Horizon — 2D Endless Runner Game
 
 <p align="center">
+  <a href="https://meek-semolina-e2eab1.netlify.app" target="_blank">
+    <img src="https://img.shields.io/badge/PLAY_ONLINE-00E5FF?style=for-the-badge&logo=netlify&logoColor=black" alt="Play Online Live Demo" />
+  </a>
   <img src="https://img.shields.io/badge/HTML5-Canvas-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5 Canvas" />
   <img src="https://img.shields.io/badge/CSS3-Glassmorphism-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-Vanilla%20ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Vanilla JS" />
   <img src="https://img.shields.io/badge/Web%20Audio-Procedural%20Synth-9cf?style=for-the-badge" alt="Web Audio API" />
   <img src="https://img.shields.io/badge/Zero-Dependencies-success?style=for-the-badge" alt="Zero Dependencies" />
-  <img src="https://img.shields.io/badge/Mobile-Touch%20%26%20PWA%20Ready-blueviolet?style=for-the-badge" alt="Mobile Ready" />
 </p>
+
+> 🎮 **Live Demo:** [https://meek-semolina-e2eab1.netlify.app](https://meek-semolina-e2eab1.netlify.app)
 
 A polished, high-performance **2D Endless Runner browser game** built entirely from scratch with **HTML5 Canvas, CSS3, and vanilla JavaScript**.
 
@@ -23,6 +27,13 @@ Features an articulated animated runner, multi-layer parallax scrolling with a d
 * **Procedural Fair Spawning**: Speed-adaptive hazard generation that guarantees balanced reaction windows and prevents impossible obstacle clusters.
 * **Web Audio Sound Synthesizer**: 100% procedural retro-modern sound effects using browser oscillators, noise buffers, and biquad filters. **Zero external MP3/WAV files required** (no broken audio links, zero network latency).
 * **Multi-Device Support**: Optimized for Desktop (Keyboard), iPhone, and Android with on-screen touch buttons and swipe gesture detection.
+
+---
+
+## 🌐 Live Online Demo
+
+Play instantly in your browser on Desktop, iPhone, or Android with zero installation:  
+👉 **[https://meek-semolina-e2eab1.netlify.app](https://meek-semolina-e2eab1.netlify.app)**
 
 ---
 
@@ -116,10 +127,6 @@ Simply double-click **`index.html`** or open it in any modern web browser (Chrom
 #### 📱 Fullscreen PWA Experience (App-Like):
 * **iPhone (Safari)**: Tap **Share** $\rightarrow$ **"Add to Home Screen"**.
 * **Android (Chrome)**: Tap **Menu (⋮)** $\rightarrow$ **"Install App"** / **"Add to Home Screen"**.
-
-### Option 3: Deploy to Free Web Hosting (Play Anywhere)
-* **Netlify Drop**: Drag and drop the `endless-runner` folder to [app.netlify.com/drop](https://app.netlify.com/drop) for an instant worldwide `https://...` link.
-* **GitHub Pages**: Push this directory to a GitHub repository, go to **Settings** $\rightarrow$ **Pages**, and set the branch to `main`.
 
 ---
 
