@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="A professional 2D Endless Runner browser game built with HTML5, CSS3, and vanilla JavaScript.">
+  <meta name="theme-color" content="#1a1c2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CyberRunner">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Endless Runner - Cyber Horizon</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Main Game Container -->
+  <main id="gameContainer" class="game-container" role="application" aria-label="Endless Runner Game">
+    
+    <!-- Canvas for rendering -->
+    <canvas id="gameCanvas" width="1280" height="720"></canvas>
+
+    <!-- In-Game Heads-Up Display (HUD) -->
+    <div id="hud" class="hud-overlay" aria-live="polite">
+      <!-- Top Left: Distance & Multiplier -->
+      <div class="hud-group hud-left">
+        <div class="hud-badge" title="Distance traveled">
+          <span class="hud-icon">🏃</span>
+          <span id="hudDistance" class="hud-value">0 m</span>
+        </div>
+        <div id="hudSpeedTier" class="hud-pill tier-easy">
+          <span id="hudTierText">EASY</span>
+        </div>
+      </div>
+
+      <!-- Top Center: Current Score & Best -->
+      <div class="hud-group hud-center">
+        <div class="hud-score-box">
+          <span class="hud-score-label">SCORE</span>
+          <span id="hudScore" class="hud-score-value">0</span>
+        </div>
+        <div class="hud-best-box">
+          <span class="hud-best-label">BEST</span>
+          <span id="hudBestScore" class="hud-best-value">0</span>
+        </div>
+      </div>
+
+      <!-- Top Right: Coins, Sound & Pause Buttons -->
+      <div class="hud-group hud-right">
+        <div class="hud-badge coin-badge" title="Coins collected">
+          <span class="hud-icon coin-icon">🪙</span>
+          <span id="hudCoins" class="hud-value">0</span>
+        </div>
+        <div class="hud-actions">
+          <button id="btnSoundToggle" class="icon-button" aria-label="Toggle Sound" title="Sound Mute/Unmute (M)">
+            <span id="soundIcon">🔊</span>
+          </button>
+          <button id="btnPauseGame" class="icon-button" aria-label="Pause Game" title="Pause Game (P)">
+            <span>⏸</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Power-ups Bar -->
+      <div id="powerupBar" class="powerup-bar" aria-label="Active Power-ups">
+        <!-- Dynamically injected active powerup meters -->
+      </div>
+    </div>
+
+    <!-- Start / Title Screen -->
+    <section id="startScreen" class="screen-overlay active" aria-modal="true" role="dialog">
+      <div class="menu-card animate-fade-in">
+        <div class="logo-wrapper">
+          <div class="game-badge">ENDLESS HORIZON</div>
+          <h1 class="game-title">CYBER<span class="text-accent">RUNNER</span></h1>
+          <p class="game-tagline">Run. Jump. Slide. Survive the endless frontier.</p>
+        </div>
+
+        <div class="menu-stats-bar">
+          <div class="menu-stat-item">
+            <span class="stat-label">ALL-TIME BEST</span>
+            <span id="menuBestScore" class="stat-value">0</span>
+          </div>
+          <div class="menu-stat-item">
+            <span class="stat-label">MAX DISTANCE</span>
+            <span id="menuBestDistance" class="stat-value">0 m</span>
+          </div>
+        </div>
+
+        <div class="menu-actions">
+          <button id="btnStartGame" class="btn btn-primary btn-play">
+            <span class="btn-shine"></span>
+            <span class="btn-text">PLAY NOW</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+
+        <!-- Controls Guide -->
+        <div class="controls-guide">
+          <h2 class="guide-title">GAME CONTROLS</h2>
+          <div class="controls-grid">
+            <div class="control-item">
+              <div class="key-combo">
+                <kbd>SPACE</kbd> or <kbd>↑</kbd> / <kbd>W</kbd>
+              </div>
+              <span class="control-label">Jump / Double Jump</span>
+            </div>
+            <div class="control-item">
+              <div class="key-combo">
+                <kbd>↓</kbd> or <kbd>S</kbd>
+              </div>
+              <span class="control-label">Slide Under</span>
+            </div>
+            <div class="control-item">
+              <div class="key-combo">
+                <kbd>P</kbd> or <kbd>ESC</kbd>
+              </div>
+              <span class="control-label">Pause / Resume</span>
+            </div>
+            <div class="control-item mobile-hint">
+              <div class="touch-combo">
+                <span>📱 Tap / Swipe Up</span>
+              </div>
+              <span class="control-label">Jump | Swipe Down to Slide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pause Screen -->
+    <section id="pauseScreen" class="screen-overlay" aria-modal="true" role="dialog" hidden>
+      <div class="menu-card card-pause animate-pop-in">
+        <h2 class="dialog-title">GAME PAUSED</h2>
+        <p class="dialog-subtitle">Take a breather, runner.</p>
+
+        <div class="pause-stats">
+          <div class="pause-stat">
+            <span class="pause-stat-label">Current Score</span>
+            <span id="pauseCurrentScore" class="pause-stat-value">0</span>
+          </div>
+          <div class="pause-stat">
+            <span class="pause-stat-label">Distance</span>
+            <span id="pauseCurrentDistance" class="pause-stat-value">0 m</span>
+          </div>
+          <div class="pause-stat">
+            <span class="pause-stat-label">Coins</span>
+            <span id="pauseCurrentCoins" class="pause-stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="menu-actions stacked">
+          <button id="btnResumeGame" class="btn btn-primary">
+            <span class="btn-text">RESUME RUN</span>
+          </button>
+          <button id="btnRestartFromPause" class="btn btn-secondary">
+            <span class="btn-text">RESTART</span>
+          </button>
+          <button id="btnMenuFromPause" class="btn btn-ghost">
+            <span class="btn-text">MAIN MENU</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Over Screen -->
+    <section id="gameOverScreen" class="screen-overlay" aria-modal="true" role="dialog" hidden>
+      <div class="menu-card card-gameover animate-pop-in">
+        <div id="newHighScoreBanner" class="high-score-banner" hidden>
+          <span class="trophy-icon">🏆</span>
+          <span>NEW HIGH SCORE!</span>
+        </div>
+
+        <h2 class="dialog-title text-danger">RUN TERMINATED</h2>
+        <p class="dialog-subtitle">Obstacle collision detected.</p>
+
+        <div class="gameover-results-grid">
+          <div class="result-tile primary-tile">
+            <span class="result-label">FINAL SCORE</span>
+            <span id="goScore" class="result-value big-number">0</span>
+          </div>
+          <div class="result-tile">
+            <span class="result-label">DISTANCE</span>
+            <span id="goDistance" class="result-value">0 m</span>
+          </div>
+          <div class="result-tile">
+            <span class="result-label">COINS COLLECTED</span>
+            <span id="goCoins" class="result-value">0</span>
+          </div>
+          <div class="result-tile">
+            <span class="result-label">BEST RECORD</span>
+            <span id="goBest" class="result-value">0</span>
+          </div>
+        </div>
+
+        <div class="menu-actions stacked">
+          <button id="btnPlayAgain" class="btn btn-primary btn-play">
+            <span class="btn-shine"></span>
+            <span class="btn-text">PLAY AGAIN</span>
+            <span class="btn-icon">↻</span>
+          </button>
+          <button id="btnMenuFromGameOver" class="btn btn-ghost">
+            <span class="btn-text">MAIN MENU</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- On-Screen Mobile Touch Controls (shown on touch devices) -->
+    <div id="mobileControls" class="mobile-controls-bar" aria-label="Touch Controls">
+      <button id="btnTouchSlide" class="touch-btn touch-btn-slide" aria-label="Slide">
+        <span class="touch-icon">⬇</span>
+        <span class="touch-text">SLIDE</span>
+      </button>
+      <button id="btnTouchJump" class="touch-btn touch-btn-jump" aria-label="Jump">
+        <span class="touch-icon">⬆</span>
+        <span class="touch-text">JUMP</span>
+      </button>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
